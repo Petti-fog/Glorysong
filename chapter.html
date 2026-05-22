@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comic Viewer</title>
+
+  <script src="chapters.js" defer></script>
+
+  
+
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      overflow: hidden;
+    }
+
+    img {
+      width: 100vw;
+      height: 100vh;
+      object-fit: contain;
+      display: block;
+    }
+
+    .zone {
+      position: fixed;
+      top: 0;
+      height: 100vh;
+      width: 50vw;
+    }
+
+    #left { left: 0; }
+    #right { right: 0; }
+  </style>
+</head>
+
+<body>
+
+  <img id="panel">
+
+  <div id="left" class="zone"></div>
+  <div id="right" class="zone"></div>
+
+  <script>
+
+const params = new URLSearchParams(window.location.search);
+const chapterIndex = parseInt(params.get("ch")) || 0;
+
+const chapterData = [
+  { panels: 68 },
+  { panels: 22 }
+];
+
+const totalPanels = chapterData[chapterIndex].panels;
+const chapterNumber = chapterIndex + 1;
+const chapterFolder = `images/chapter${chapterNumber}/`;
+
+const images = [];
+
+for (let i = 1; i <= totalPanels; i++) {
+  const num = String(i).padStart(3, '0');
+  images.push(`${chapterFolder}${num}.jpg`);
+}
+
+let index = 0;
+
+if (window.location.hash === "#last") {
+  index = images.length - 1;
+}
+
+const panel = document.getElementById("panel");
+panel.src = images[index];
+
+document.getElementById("right").onclick = () => {
+  if (index < images.length - 1) {
+    index++;
+    panel.src = images[index];
+  } else {
+    const nextChapter = chapterIndex + 1;
+
+    if (chapterData[nextChapter]) {
+      window.location.href = `chapter.html?ch=${nextChapter}`;
+    } else {
+      window.location.href = "end.html";
+    }
+  }
+};
+
+document.getElementById("left").onclick = () => {
+  if (index > 0) {
+    index--;
+    panel.src = images[index];
+  } else {
+    const prevChapter = chapterIndex - 1;
+
+    if (chapterData[prevChapter]) {
+      window.location.href = `chapter.html?ch=${prevChapter}#last`;
+    } else {
+      window.location.href = "index.html";
+    }
+  }
+};
+
+  </script>
+
+</body>
+</html>
