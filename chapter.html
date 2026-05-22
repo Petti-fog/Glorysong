@@ -72,7 +72,19 @@ if (window.location.hash === "#last") {
 const panel = document.getElementById("panel");
 panel.src = images[index];
 
+function enterFullscreen() {
+  if (document.documentElement.requestFullscreen) {
+    document.documentElement.requestFullscreen();
+  }
+}
+
 document.getElementById("right").onclick = () => {
+
+  // FIRST PANEL ONLY
+  if (index === 0) {
+    enterFullscreen();
+  }
+
   if (index < images.length - 1) {
     index++;
     panel.src = images[index];
@@ -82,7 +94,7 @@ document.getElementById("right").onclick = () => {
     if (chapterData[nextChapter]) {
       window.location.href = `chapter.html?ch=${nextChapter}`;
     } else {
-      window.location.href = "end.html";
+      window.location.href = "./end.html";
     }
   }
 };
