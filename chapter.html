@@ -125,6 +125,18 @@ document.getElementById("left").onclick = () => {
   }
 };
 
+document.addEventListener("keydown", (event) => {
+
+  if (event.key === "ArrowRight") {
+    document.getElementById("right").click();
+  }
+
+  if (event.key === "ArrowLeft") {
+    document.getElementById("left").click();
+  }
+
+});
+
   </script>
 
 </body>
