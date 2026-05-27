@@ -21,6 +21,67 @@
   
 
   <style>
+
+#topMenu {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%) translateY(-100%);
+
+  display: flex;
+  gap: 12px;
+
+  padding: 12px 20px;
+
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+
+  border-radius: 0 0 12px 12px;
+
+  z-index: 1000;
+
+  transition: transform 0.25s ease;
+}
+
+#topMenu.show {
+  transform: translateX(-50%) translateY(0);
+}
+
+#topMenu a,
+#topMenu button {
+  background: rgba(255, 255, 255, 0.12);
+  color: white;
+
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+
+  padding: 10px 14px;
+  border-radius: 10px;
+
+  font-size: 20px;
+  font-family: inherit;
+
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+#topMenu a:hover,
+#topMenu button:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
+}
+
+#topMenu a:active,
+#topMenu button:active {
+  transform: translateY(0px);
+}
+}
+
+@media (hover: none), (pointer: coarse) {
+  #topMenu {
+    display: none;
+  }
+}
     body {
       margin: 0;
       background: black;
@@ -47,6 +108,18 @@
 </head>
 
 <body>
+
+<div id="topMenu">
+
+  <a href="index.html">Home</a>
+
+  <button id="prevChapter">Previous Chapter</button>
+
+  <button id="nextChapter">Next Chapter</button>
+
+  <button id="fullscreenBtn">Fullscreen</button>
+
+</div>
 
   <img id="panel">
 
@@ -88,6 +161,16 @@ function enterFullscreen() {
     document.documentElement.requestFullscreen();
   }
 }
+
+document.getElementById("fullscreenBtn").onclick = () => {
+  const el = document.documentElement;
+
+  if (!document.fullscreenElement) {
+    el.requestFullscreen?.();
+  } else {
+    document.exitFullscreen?.();
+  }
+};
 
 document.getElementById("right").onclick = () => {
 
@@ -136,6 +219,34 @@ document.addEventListener("keydown", (event) => {
   }
 
 });
+
+const topMenu = document.getElementById("topMenu");
+
+document.addEventListener("mousemove", (e) => {
+
+  if (e.clientY < 60) {
+    topMenu.classList.add("show");
+  } else {
+    topMenu.classList.remove("show");
+  }
+
+});
+
+document.getElementById("prevChapter").onclick = () => {
+
+  if (chapterIndex > 0) {
+    window.location.href = `chapter.html?ch=${chapterIndex - 1}`;
+  }
+
+};
+
+document.getElementById("nextChapter").onclick = () => {
+
+  if (chapterData[chapterIndex + 1]) {
+    window.location.href = `chapter.html?ch=${chapterIndex + 1}`;
+  }
+
+};
 
   </script>
 
